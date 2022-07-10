@@ -4,6 +4,7 @@ import com.example.mentoring.entity.Board;
 import com.example.mentoring.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -20,17 +21,23 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    @Transactional(readOnly = true)
     public List<Board> findAllBoard() {
+        Board board = boardRepository.findById(1).get();
+
         return boardRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Board findBoard(int id) {
         return boardRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
+    @Transactional
     public Board writeBoard(Board boardReq) {
         Board board = new Board(boardReq.getTitle(), boardReq.getContent(), boardReq.getWriter());
         boardRepository.save(board);
         return board;
     }
+
 }
