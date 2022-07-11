@@ -21,6 +21,7 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    // 게시글 전체 조회
     @Transactional(readOnly = true)
     public List<Board> findAllBoard() {
         Board board = boardRepository.findById(1).get();
@@ -28,11 +29,15 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
+
+    // 게시글 단건 조회
     @Transactional(readOnly = true)
     public Board findBoard(int id) {
         return boardRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
+
+    // 게시글 작성
     @Transactional
     public Board writeBoard(Board boardReq) {
         Board board = new Board(boardReq.getTitle(), boardReq.getContent(), boardReq.getWriter());
@@ -40,4 +45,27 @@ public class BoardService {
         return board;
     }
 
+
+    // 게시글 수정
+    @Transactional
+    public Board editBoard(int id, Board updateBoard) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+            return new IllegalArgumentException();
+        });
+
+        board.setTitle(updateBoard.getTitle());
+        board.setContent(updateBoard.getContent());
+        return board;
+    }
+
+
+    // 게시글 삭제
+    @Transactional
+    public void deleteBoard(int id) {
+        Board board = boardRepository.findById(id).orElseThrow(() -> {
+            return new IllegalArgumentException();
+        });
+
+        boardRepository.deleteById(id);
+    }
 }

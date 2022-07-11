@@ -15,28 +15,40 @@ import org.springframework.web.bind.annotation.*;
  * @RestController 는 API 서버를 만들 때 주로 사용됩니다. 저희는 API 서버를 만드니 RestController 로 진행합니다.
  */
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor // 생성자
 @RestController
-@RequestMapping("/api")
 public class BoardController {
     private final BoardService boardService;
 
     // 게시글 전체 조회
-    @GetMapping("/boards")
+    @GetMapping("/api/boards")
     public ResponseEntity<?> findAll() {
         return new ResponseEntity<>(boardService.findAllBoard(), HttpStatus.OK);
     }
 
     // 게시글 단건 조회
-    @GetMapping("/boards/{id}")
+    @GetMapping("/api/boards/{id}")
     public ResponseEntity<?> findBoard(@PathVariable("id") int id) {
         return new ResponseEntity<>(boardService.findBoard(id), HttpStatus.OK);
     }
 
     // 게시글 작성
-    @PostMapping("/boards")
+    @PostMapping("/api/boards")
     public ResponseEntity<?> writeBoard(@RequestBody Board board) {
-        return new ResponseEntity<>(boardService.writeBoard(board), HttpStatus.OK);
+        return new ResponseEntity<>(boardService.writeBoard(board), HttpStatus.CREATED);
     }
 
+    // 게시글 수정
+    @PutMapping("/api/boards/{id}")
+    public ResponseEntity<?> editBoard(@PathVariable("id") int id, @RequestBody Board board) {
+        return new ResponseEntity<>(boardService.editBoard(id, board), HttpStatus.OK);
+    }
+
+
+    // 게시글 삭제
+    @DeleteMapping("/api/boards/{id}")
+    public ResponseEntity<?> deleteBoard(@PathVariable int id) {
+        boardService.deleteBoard(id);
+        return new ResponseEntity<>("게시글 삭제 완료", HttpStatus.OK);
+    }
 }
