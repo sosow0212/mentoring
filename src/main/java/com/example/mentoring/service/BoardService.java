@@ -1,6 +1,8 @@
 package com.example.mentoring.service;
 
 import com.example.mentoring.entity.Board;
+import com.example.mentoring.exception.BoardNotFoundException;
+import com.example.mentoring.exception.WriterNotFoundException;
 import com.example.mentoring.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,12 +24,16 @@ public class BoardService {
 
     @Transactional(readOnly = true)
     public Board getBoard(Long id) {
-        Board board = boardRepository.findById(id).get();
+        Board board = boardRepository.findById(id).orElseThrow(BoardNotFoundException::new);
         return board;
     }
 
     @Transactional
     public Board save(Board board) {
+        // 작성자가 없을 때 예외 터뜨려보기
+        if(board.getWriter().equals(" ")) {
+            throw new WriterNotFoundException();
+        }
         return boardRepository.save(board);
     }
 
@@ -40,10 +46,8 @@ public class BoardService {
         // 2. 기존 게시물에, updateBoard 정보를 덮어씌워준다.
         board.setTitle(updateBoard.getTitle());
         board.setContent(updateBoard.getContent());
-
         return board;
     }
-
 
     @Transactional
     public void deleteBoard(Long id) {
