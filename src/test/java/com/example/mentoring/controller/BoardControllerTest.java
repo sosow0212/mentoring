@@ -19,6 +19,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+// TDD 테스트 주도 개발
 @ExtendWith(MockitoExtension.class)
 public class BoardControllerTest {
     @InjectMocks
