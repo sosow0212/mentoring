@@ -10,17 +10,14 @@ import javax.validation.constraints.NotBlank;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardRequestDto {
+public class BoardEditRequestDto {
     @NotBlank(message = "게시글 제목을 입력해주세요.")
     private String title;
 
     @NotBlank(message = "게시글 내용을 입력해주세요.")
     private String content;
 
-    @NotBlank(message = "게시글 작성자를 입력해주세요.")
+    // 이건 없어도 됨
     private String writer;
 
-    public Board toDto(BoardRequestDto boardReq) {
-        return new Board(boardReq.getTitle(), boardReq.getContent(), boardReq.getWriter());
-    }
 }
