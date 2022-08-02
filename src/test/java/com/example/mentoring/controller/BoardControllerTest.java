@@ -1,7 +1,9 @@
 package com.example.mentoring.controller;
 
-import com.example.mentoring.entity.Board;
+import com.example.mentoring.dto.BoardEditRequestDto;
+import com.example.mentoring.dto.BoardRequestDto;
 import com.example.mentoring.service.BoardService;
+import com.example.mentoring.service.BoardServiceTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -41,16 +43,16 @@ public class BoardControllerTest {
     @DisplayName("게시글 작성")
     public void saveBoardTest() throws Exception {
         // given
-        Board board = new Board(1L, "제목", "내용", "홍길동");
+        BoardRequestDto boardReq = new BoardRequestDto( "제목", "내용", "홍길동");
 
         // when, then
         mockMvc.perform(
                 post("/boards")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(board)))
+                        .content(objectMapper.writeValueAsString(boardReq)))
                 .andExpect(status().isCreated());
 
-        verify(boardService).save(board);
+        verify(boardService).save(boardReq);
     }
 
 
@@ -88,17 +90,17 @@ public class BoardControllerTest {
     public void editBoardTest() throws Exception {
         // given
         Long id = 1L;
-        Board board = new Board(1L, "제목1", "내용1", "작성자");
+        BoardEditRequestDto boardEditReq = new BoardEditRequestDto( "제목", "내용", "홍길동");
 
         // when, then
         mockMvc.perform(
                 put("/boards/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(board)))
+                        .content(objectMapper.writeValueAsString(boardEditReq)))
                 .andExpect(status().isOk());
 
-        verify(boardService).editBoard(id, board);
-        assertThat(board.getTitle()).isEqualTo("제목1");
+        verify(boardService).editBoard(id, boardEditReq);
+        assertThat(boardEditReq.getTitle()).isEqualTo("제목");
     }
 
 
