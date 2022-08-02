@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor // @Non null + static 생성자
 @RestController
 public class BoardController {
@@ -25,7 +27,7 @@ public class BoardController {
     // 단건 게시글 조회
     @ResponseStatus(HttpStatus.OK) // 상태코드는 컨트롤러에서 지정해주는게 좋다.
     @GetMapping("/boards/{id}")
-    public Response getBoard(@PathVariable("id") Long id) {
+    public Response getBoard(@Valid @PathVariable("id") Long id) {
         return Response.success(boardService.getBoard(id));
     }
 
@@ -41,7 +43,7 @@ public class BoardController {
     // 게시글 수정하고 -> 완료 버튼을 누른다 -> 백엔드 서버 요청 (id, updateBoard)
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/boards/{id}")
-    public Response editBoard(@PathVariable("id") Long id, @RequestBody BoardEditRequestDto boardEditReq) {
+    public Response editBoard(@Valid @PathVariable("id") Long id, @RequestBody BoardEditRequestDto boardEditReq) {
         return Response.success(boardService.editBoard(id, boardEditReq));
     }
 
