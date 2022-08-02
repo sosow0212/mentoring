@@ -1,5 +1,7 @@
 package com.example.mentoring.controller;
 
+import com.example.mentoring.dto.BoardEditRequestDto;
+import com.example.mentoring.dto.BoardRequestDto;
 import com.example.mentoring.entity.Board;
 import com.example.mentoring.response.Response;
 import com.example.mentoring.service.BoardService;
@@ -30,8 +32,8 @@ public class BoardController {
     // POST 게시글 작성
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/boards")
-    public Response save(@RequestBody Board board) {
-        return Response.success(boardService.save(board));
+    public Response save(@RequestBody BoardRequestDto boardReq) {
+        return Response.success(boardService.save(boardReq));
     }
 
     // PUT 게시글 수정
@@ -39,8 +41,8 @@ public class BoardController {
     // 게시글 수정하고 -> 완료 버튼을 누른다 -> 백엔드 서버 요청 (id, updateBoard)
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/boards/{id}")
-    public Response editBoard(@PathVariable("id") Long id, @RequestBody Board updateBoard) {
-        return Response.success(boardService.editBoard(id, updateBoard));
+    public Response editBoard(@PathVariable("id") Long id, @RequestBody BoardEditRequestDto boardEditReq) {
+        return Response.success(boardService.editBoard(id, boardEditReq));
     }
 
     // DELETE 게시글 삭제
