@@ -17,7 +17,7 @@ public class BoardEditRequestDto {
     @NotBlank(message = "게시글 내용을 입력해주세요.")
     private String content;
 
-    // 이건 없어도 됨
+    // 이건 없어도 됨.
     private String writer;
 
 }
